@@ -4,8 +4,6 @@ import org.apache.http.HttpResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class RestTest{
@@ -16,13 +14,9 @@ public class RestTest{
     public void checkGetResponseStatusCode() throws IOException {
         String endpoint="/api/users";
 
-
-        //Выполняем REST GET запрос с нашими параметрами
-        // и сохраняем результат в переменную response.
         HttpResponse response = HttpClientHelper.get(URL+endpoint,"page=2");
 
-        //получаем статус код из ответа
-        int statusCode = response.getStatusLine().getStatusCode();
+         int statusCode = response.getStatusLine().getStatusCode();
         System.out.println("Response Code : " + statusCode);
         Assert.assertEquals("Response status code should be 200", 200, statusCode);
     }
@@ -32,8 +26,6 @@ public class RestTest{
     public void checkGetResponseBodyNotNull() throws IOException {
         String endpoint="/api/users";
 
-        //Выполняем REST GET запрос с нашими параметрами
-        // и сохраняем результат в переменную response.
         HttpResponse response = HttpClientHelper.get(URL+endpoint,"page=2");
 
         //Конвертируем входящий поток тела ответа в строку
@@ -47,10 +39,8 @@ public class RestTest{
         String endpoint="/api/users";
 
         //создаём тело запроса
-        String requestBody="{\"name\": \"morpheus\",\"job\": \"leader\"}";
+        String requestBody="{\"name\": \"test1\",\"job\": \"test1\"}";
 
-        //Выполняем REST POST запрос с нашими параметрами
-        // и сохраняем результат в переменную response.
         HttpResponse response = HttpClientHelper.post(URL+endpoint,requestBody);
 
         //получаем статус код из ответа
@@ -65,10 +55,8 @@ public class RestTest{
 
 
         //создаём тело запроса
-        String requestBody="{\"name\": \"morpheus\",\"job\": \"leader\"}";
+        String requestBody="{\"name\": \"test1\",\"job\": \"test1\"}";
 
-        //Выполняем REST POST запрос с нашими параметрами
-        // и сохраняем результат в переменную response.
         HttpResponse response = HttpClientHelper.post(URL+endpoint,requestBody);
 
         //Конвертируем входящий поток тела ответа в строку
@@ -82,14 +70,51 @@ public class RestTest{
 
     @Test
     public void checkPutResponseStatusCode() throws IOException {
-        String endpoint="/api/users";
+        String endpoint = "/api/users";
 
-        String requestBody="{\"name\": \"morpheus\",\"job\": \"leader\"}";
+        String requestBody="{\"name\": \"test1\",\"job\": \"leader\"}";
 
         HttpResponse response = HttpClientHelper.put(URL + endpoint, requestBody);
 
         int statusCode = response.getStatusLine().getStatusCode();
         System.out.println("Response Code : " + statusCode);
+
+    }
+
+    @Test
+    public void checkPutResponseBodyNotNull(){
+        String endpoint = "/api/users";
+
+        /*-----*/
+
+
+    }
+
+    @Test
+    public void checkDeleteResponseStatusCode() throws IOException {
+        String endpoin = "/api/users";
+
+        HttpResponse response = HttpClientHelper.delete(URL + endpoin);
+
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        System.out.println("Response Code : " + statusCode);
+
+
+    }
+
+
+    @Test
+    public void sendPostRegisterUser() throws IOException {
+        String endpoint = "/api/register";
+
+        String requestBody="{\"email\": \"test@test.gmail\",\"password\": \"test\"}";
+
+        HttpResponse response = HttpClientHelper.post(URL+endpoint,requestBody);
+
+        //Конвертируем входящий поток тела ответа в строку
+        String body=HttpClientHelper.getBodyFromResponse(response);
+        System.out.println(body);
 
     }
 

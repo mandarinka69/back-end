@@ -2,9 +2,7 @@ package com.brainacad;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -19,13 +17,21 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 public class HttpClientHelper {
 
-    public static HttpResponse get(String endpointUrl, String parameters) throws IOException {
-        Map<String, String> headers=new HashMap<>();
+    public static Map<String, String> headers=new HashMap<>();
+
+    static {
         headers.put("Content-Type", "application/json");
+    }
+
+
+    public static HttpResponse get(String endpointUrl, String parameters) throws IOException {
+        //Map<String, String> headers=new HashMap<>();
+        //headers.put("Content-Type", "application/json");
 
 
         return get(endpointUrl, parameters, headers);
     }
+
 
     //REST GET запрос
     public static HttpResponse get(String endpointUrl, String parameters, Map<String, String> headers) throws IOException {
@@ -99,8 +105,7 @@ public class HttpClientHelper {
     //TODO: допишите методы для запросов PUT, PATCH и DELETE
 
     public static HttpResponse put(String endpointUrl, String body) throws IOException {
-        Map<String, String> headers=new HashMap<>();
-        headers.put("Content-Type", "application/json");
+
 
         HttpClient client = HttpClientBuilder.create().build();
         HttpPut put = new HttpPut(endpointUrl);
@@ -118,6 +123,22 @@ public class HttpClientHelper {
         //возвращаем response
         return response;
     }
+
+    public static HttpResponse delete(String endpointUrl) throws IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpDelete delete = new HttpDelete(endpointUrl);
+
+        for(String headerKey:headers.keySet()){
+            delete.addHeader(headerKey, headers.get(headerKey));
+        }
+
+        HttpResponse response = client.execute(delete);
+
+
+        return response;
+    }
+
+
 
 
 }
